@@ -27,11 +27,9 @@ module.exports = {
 
       const user = interaction.options.getUser("kullanıcı") || interaction.user;
 
-      // Canvas oluşturma
       const canvas = createCanvas(800, 500);
       const ctx = canvas.getContext("2d");
 
-      // Arka plan gradient (kırmızı-yeşil yılbaşı renkleri)
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       gradient.addColorStop(0, "#1a2a6c");
       gradient.addColorStop(0.5, "#b21f1f");
@@ -39,7 +37,6 @@ module.exports = {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Kar taneleri efekti
       ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
       for (let i = 0; i < 100; i++) {
         const x = Math.random() * canvas.width;
@@ -50,18 +47,15 @@ module.exports = {
         ctx.fill();
       }
 
-      // Kart gövdesi
       ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
       ctx.roundRect(30, 30, canvas.width - 60, canvas.height - 60, 20);
       ctx.fill();
       
-      // Kenar çerçevesi (yılbaşı renkleri)
       ctx.strokeStyle = "rgba(255, 215, 0, 0.5)";
       ctx.lineWidth = 5;
       ctx.roundRect(30, 30, canvas.width - 60, canvas.height - 60, 20);
       ctx.stroke();
 
-      // Yılbaşı süslemeleri - çam ağacı
       ctx.fillStyle = "#228B22";
       ctx.beginPath();
       ctx.moveTo(canvas.width - 100, canvas.height - 100);
@@ -70,11 +64,9 @@ module.exports = {
       ctx.closePath();
       ctx.fill();
       
-      // Çam ağacı gövdesi
       ctx.fillStyle = "#8B4513";
       ctx.fillRect(canvas.width - 95, canvas.height - 30, 10, 30);
       
-      // Çam ağacı süslemeleri
       const decorations = ["#FF0000", "#FFD700", "#FFFFFF", "#1E90FF"];
       for (let i = 0; i < 10; i++) {
         const x = canvas.width - 150 + Math.random() * 100;
@@ -85,11 +77,9 @@ module.exports = {
         ctx.fill();
       }
 
-      // Yılbaşı yıldızı
       ctx.fillStyle = "#FFD700";
       drawStar(ctx, canvas.width - 100, canvas.height - 120, 5, 15, 5);
 
-      // Yılbaşı mesajı
       ctx.fillStyle = "#FFFFFF";
       ctx.font = "bold 36px 'Arial'";
       ctx.textAlign = "center";
@@ -98,11 +88,9 @@ module.exports = {
       ctx.font = "italic 20px 'Arial'";
       ctx.fillText(`${moment().format('YYYY')} Yılına Hoş Geldiniz`, canvas.width / 2, 110);
 
-      // Avatar bölümü
       try {
         const avatar = await loadImage(user.displayAvatarURL({ extension: 'png', size: 256 }));
         
-        // Avatar için daire çerçeve
         ctx.save();
         ctx.beginPath();
         ctx.arc(canvas.width / 2, 220, 80, 0, Math.PI * 2, true);
@@ -110,15 +98,13 @@ module.exports = {
         ctx.clip();
         ctx.drawImage(avatar, canvas.width / 2 - 80, 140, 160, 160);
         ctx.restore();
-        
-        // Avatar çerçevesi (yılbaşı renkleri)
+
         ctx.beginPath();
         ctx.arc(canvas.width / 2, 220, 85, 0, Math.PI * 2, true);
         ctx.lineWidth = 8;
         ctx.strokeStyle = "#FF0000";
         ctx.stroke();
-        
-        // İç çerçeve
+ 
         ctx.beginPath();
         ctx.arc(canvas.width / 2, 220, 90, 0, Math.PI * 2, true);
         ctx.lineWidth = 3;
@@ -128,21 +114,18 @@ module.exports = {
         console.error("Avatar yüklenirken hata:", error);
       }
 
-      // Kullanıcı adı
       ctx.fillStyle = "#FFFFFF";
       ctx.font = "bold 28px 'Arial'";
       ctx.textAlign = "center";
       ctx.fillText(user.username, canvas.width / 2, 350);
 
-      // Yılbaşı mesajı
       ctx.font = "20px 'Arial'";
       ctx.fillText("Yeni yılda sağlık, mutluluk ve başarı dolu günler dileriz!", canvas.width / 2, 380);
 
-      // Tarih bilgisi
       ctx.font = "16px 'Arial'";
       ctx.fillText(moment().format("DD MMMM YYYY, dddd"), canvas.width / 2, 420);
 
-      // Resmi gönderme
+
       const attachment = canvas.toBuffer();
       await interaction.editReply({
         files: [{ attachment, name: "yilbasi_karti.png" }]
@@ -157,7 +140,6 @@ module.exports = {
   }
 };
 
-// Yıldız çizme fonksiyonu
 function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius) {
   let rot = Math.PI / 2 * 3;
   let x = cx;
