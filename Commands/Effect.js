@@ -65,10 +65,9 @@ const {
       });
   
       collector.on('collect', async i => {
-        // Eğer tıklayan kişi komutu kullanan değilse uyar
         if (i.user.id !== interaction.user.id) {
           return i.reply({
-            content: `**Bu menüyü sadece <@${interaction.user.id}> kullanabilir.**`,
+            content: `**❌ Bu menüyü sadece <@${interaction.user.id}> kullanabilir.**`,
             ephemeral: true
           });
         }
