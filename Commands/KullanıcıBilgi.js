@@ -34,11 +34,9 @@ module.exports = {
         });
       }
 
-      // Canvas oluşturma
       const canvas = createCanvas(950, 600);
       const ctx = canvas.getContext("2d");
 
-      // Arka plan gradient
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       gradient.addColorStop(0, "#0f0c29");
       gradient.addColorStop(0.5, "#302b63");
@@ -46,7 +44,6 @@ module.exports = {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Dekoratif noktalar
       ctx.fillStyle = "rgba(100, 200, 255, 0.15)";
       for (let i = 0; i < 50; i++) {
         const x = Math.random() * canvas.width;
@@ -57,36 +54,29 @@ module.exports = {
         ctx.fill();
       }
 
-      // Bilgi kartı gövdesi
       ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
       ctx.roundRect(30, 30, canvas.width - 60, canvas.height - 60, 20);
       ctx.fill();
       
-      // Kenar çerçevesi
       ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
       ctx.lineWidth = 2;
       ctx.roundRect(30, 30, canvas.width - 60, canvas.height - 60, 20);
       ctx.stroke();
 
-      // Tarih ve saat bilgisi (sağ üstte, iki satır halinde)
       ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
       ctx.font = "bold 16px 'Arial'";
       
-      // Tarih satırı (üstte) - "Tarih: " eklendi
       const tarihText = "Tarih: " + moment().format("DD/MM/YYYY dddd");
       const tarihWidth = ctx.measureText(tarihText).width;
       ctx.fillText(tarihText, canvas.width - tarihWidth - 40, 60);
       
-      // Saat satırı (tarihin altında) - "Saat:" yapıldı (S büyük)
-      const saatText = "Saat: " + moment().format("HH.mm"); // "Saat:24.15" formatı
+      const saatText = "Saat: " + moment().format("HH.mm"); 
       const saatWidth = ctx.measureText(saatText).width;
-      ctx.fillText(saatText, canvas.width - saatWidth - 40, 85); // 25px aşağıda
+      ctx.fillText(saatText, canvas.width - saatWidth - 40, 85); 
 
-      // Avatar bölümü
       try {
         const avatar = await loadImage(user.displayAvatarURL({ extension: 'png', size: 256 }));
         
-        // Avatar için daire çerçeve
         ctx.save();
         ctx.beginPath();
         ctx.arc(150, 120, 70, 0, Math.PI * 2, true);
@@ -95,7 +85,6 @@ module.exports = {
         ctx.drawImage(avatar, 80, 50, 140, 140);
         ctx.restore();
         
-        // Avatar çerçevesi
         const borderGradient = ctx.createRadialGradient(150, 120, 60, 150, 120, 80);
         borderGradient.addColorStop(0, getStatusColor(member.presence?.status || 'offline'));
         borderGradient.addColorStop(1, "#ffffff");
@@ -109,7 +98,6 @@ module.exports = {
         console.error("Avatar yüklenirken hata:", error);
       }
 
-      // Başlık
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 32px 'Arial'";
       ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
@@ -119,7 +107,6 @@ module.exports = {
       ctx.fillText("Kullanıcı Bilgileri", 250, 120);
       ctx.shadowBlur = 0;
 
-      // Ayırıcı çizgi
       ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -127,7 +114,6 @@ module.exports = {
       ctx.lineTo(canvas.width - 60, 140);
       ctx.stroke();
 
-      // Kullanıcı durumu
       const statusMapping = {
         online: "Çevrimiçi",
         idle: "Boşta",
@@ -136,7 +122,6 @@ module.exports = {
       };
       const status = statusMapping[member.presence?.status] || "Bilinmiyor";
 
-      // Bilgi grupları
       const userInfo = [
         { title: "Kullanıcı Adı", value: user.tag },
         { title: "Kullanıcı ID", value: user.id },
@@ -151,27 +136,22 @@ module.exports = {
         { title: "Boost Durumu", value: member.premiumSince ? moment(member.premiumSince).format("LL LTS") + " tarihinden beri" : "Boost yok" }
       ];
 
-      // Bilgileri yazdırma
       ctx.font = "18px 'Arial'";
       let yPos = 180;
       const boxWidth = canvas.width - 300;
       
       userInfo.forEach((info, index) => {
-        // Satır arka planı
         ctx.fillStyle = index % 2 === 0 ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.02)";
         ctx.roundRect(250, yPos - 20, canvas.width - 300, 30, 5);
         ctx.fill();
         
-        // Başlık
         ctx.fillStyle = "#AAAAAA";
         ctx.font = "bold 18px 'Arial'";
         ctx.fillText(info.title, 260, yPos);
         
-        // Değer
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "18px 'Arial'";
         
-        // Metin kısaltma
         let displayValue = info.value;
         const maxWidth = boxWidth - 150;
         if (ctx.measureText(displayValue).width > maxWidth) {
@@ -186,7 +166,6 @@ module.exports = {
         yPos += 35;
       });
 
-      // Resmi gönderme
       const attachment = canvas.toBuffer();
       await interaction.editReply({
         files: [{ attachment, name: "kullanici_bilgi.png" }]
@@ -201,7 +180,6 @@ module.exports = {
   }
 };
 
-// Duruma göre renk belirleme
 function getStatusColor(status) {
   const colors = {
     online: "#43b581",
