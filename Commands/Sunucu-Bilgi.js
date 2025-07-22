@@ -17,7 +17,6 @@ module.exports = {
 
     await interaction.deferReply({ ephemeral: ephemeralOption });
 
-    // Verileri hazırla
     const memberCount = guild.memberCount;
     const botCount = guild.members.cache.filter(m => m.user.bot).size;
     const humanCount = memberCount - botCount;
@@ -42,7 +41,6 @@ module.exports = {
       3: '💎'
     };
 
-    // Sunucu özellikleri
     const features = guild.features.map(f => {
       const featureNames = {
         'ANIMATED_BANNER': 'Hareketli Afiş',
@@ -72,7 +70,6 @@ module.exports = {
       return featureNames[f] || f;
     }).join(', ') || 'Özel özellik yok';
 
-    // Üye durumları
     const statuses = {
       online: guild.members.cache.filter(m => m.presence?.status === 'online').size,
       idle: guild.members.cache.filter(m => m.presence?.status === 'idle').size,
@@ -80,10 +77,8 @@ module.exports = {
       offline: guild.members.cache.filter(m => !m.presence || m.presence.status === 'offline').size
     };
 
-    // Okyanus rengi (#1E90FF)
     const oceanColor = '#1E90FF';
 
-    // Ana embed
     const embed = new EmbedBuilder()
       .setTitle(`▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n${guild.name.toUpperCase()} SUNUCU BİLGİLERİ\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬`)
       .setThumbnail(guild.iconURL({ dynamic: true, size: 4096 }))
@@ -126,7 +121,6 @@ module.exports = {
         iconURL: interaction.user.displayAvatarURL()
       });
 
-    // Detaylı bilgi seçim menüsü
     const row = new ActionRowBuilder()
       .addComponents(
         new StringSelectMenuBuilder()
