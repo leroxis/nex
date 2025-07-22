@@ -68,7 +68,6 @@ module.exports = {
         fetchReply: true 
       });
 
-      // Avatar boyutu seçimi için collector
       const avatarFilter = i => i.user.id === komutKullananKisi.id && i.customId === 'avatarSize';
       const avatarCollector = message.createMessageComponentCollector({ filter: avatarFilter });
 
@@ -85,7 +84,6 @@ module.exports = {
         await interaction.editReply({ embeds: [updatedEmbed] });
       });
 
-      // Banner butonu için collector
       const bannerFilter = i => i.user.id === komutKullananKisi.id && i.customId === 'showBanner';
       const bannerCollector = message.createMessageComponentCollector({ filter: bannerFilter });
 
@@ -93,7 +91,6 @@ module.exports = {
         try {
           await i.deferReply({ ephemeral: true });
           
-          // Kullanıcının bannerını al
           const bannerUser = await client.users.fetch(user.id, { force: true });
           const bannerURL = bannerUser.bannerURL({ dynamic: true, size: 1024 });
 
@@ -106,20 +103,19 @@ module.exports = {
             await i.followUp({ embeds: [bannerEmbed], ephemeral: true });
           } else {
             await i.followUp({ 
-              content: `**<a:axen_carpi:1298348573817049120> <@${user.id}> kişisinin bannerı bulunmuyor!**`, 
+              content: `**❌ <@${user.id}> kişisinin bannerı bulunmuyor!**`, 
               ephemeral: true 
             });
           }
         } catch (error) {
           console.error(error);
           await i.followUp({ 
-            content: `**<a:axen_carpi:1298348573817049120> <@${user.id}> kişisinin banneri bulunmuyor!**`, 
+            content: `**❌ <@${user.id}> kişisinin banneri bulunmuyor!**`, 
             ephemeral: true 
           });
         }
       });
 
-      // Başkalarının tıklamalarını engelleme
       const otherFilter = i => i.user.id !== komutKullananKisi.id;
       const otherCollector = message.createMessageComponentCollector({ filter: otherFilter });
 
