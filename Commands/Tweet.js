@@ -26,17 +26,16 @@ module.exports = {
 
     try {
       const tweetImage = await new canvafy.Tweet()
-        .setTheme('dark') // Temayı belirtiyoruz (dark veya light)
+        .setTheme('dark') 
         .setUser({
           displayName: interaction.member.displayName,
           username: interaction.user.username,
         })
-        .setVerified(true) // Doğrulama Şeysi
+        .setVerified(true) 
         .setComment(mesaj)
         .setAvatar(avatarURL)
         .build();
 
-      // Tweet görselini gönderiyoruz
       await interaction.editReply({
         files: [{
           attachment: tweetImage,
